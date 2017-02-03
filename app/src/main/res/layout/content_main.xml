@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.xu.investo.MainFragment"
+
+    android:elevation="1dp"
+    android:background="@color/colorPrimaryDark" >
+
+
+    <TextView
+        android:text="Current Stock Price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:id="@+id/display"
+        android:lines="4"
+
+        android:padding="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Stock Current Performance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textColor="@android:color/white"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="170dp"
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/white"
+        android:padding="16dp">
+        <TextView
+            android:text="Enter the detail's of your stock of interest below"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/guide"
+            android:background="@color/colorAccent"
+            android:padding="5dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/background_light"
+
+            android:layout_centerHorizontal="true" />
+
+        <Button
+        android:text="Fetch Stock Data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fetchBtn"
+        android:layout_marginTop="110dp"
+        style="@style/Widget.AppCompat.Button.Colored"
+
+        android:layout_centerHorizontal="true" />
+
+        <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/enterID"
+            android:hint="Enter the stock ticker"
+
+
+        android:textColorHint="@android:color/black"
+        android:layout_marginTop="60dp"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/clearportfolio"
+            android:text="Clear Portfolio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="170dp"
+            style="@style/Widget.AppCompat.Button.Colored"
+           />
+
+    </RelativeLayout>
+
+</RelativeLayout>
