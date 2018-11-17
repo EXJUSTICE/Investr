@@ -1,1 +1,1 @@
-Android application designed to allow for portfolio Management. ALlows users to enter, track, and graph their portfolio's performance in the stock market. Multiple technical indicators are including, including SMA, MACD, RSI, and Boillingers.
+Android application designed to allow for stock portfolio management. llows users to enter, track, and graph their portfolio's performance in the stock market. Multiple technical indicators are including, including SMA, MACD, RSI, and Boillingers.
