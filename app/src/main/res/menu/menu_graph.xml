@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.xu.investo.GraphActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="View Technical Indicators"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_setdate"
+        android:orderInCategory="100"
+        android:title="Set Interval"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_setdefault"
+        android:orderInCategory="100"
+        android:title="Default Interval"
+        app:showAsAction="never" />
+
+</menu>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+
+        android:background="@color/colorPrimaryLight"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="0dp"
+        android:layout_height ="500dp"
+        android:minHeight="100dp"
+        android:minWidth="100dp"
+        android:weightSum="1">
+
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id ="@+id/text_dialog"
+
+
+            android:layout_above="@+id/returnButton"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Welcome to Investr"
+            android:id="@+id/Congratulations"
+            android:layout_below="@+id/image"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+         />
+
+
+
+        <TextView
+            android:text="Add stocks into your portfolio by entering their tickers. These are saved permanently into your device "
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView11"
+            android:padding="4dp"
+             />
+
+        <TextView
+            android:text="Under the PORTFOLIO tab, you can view live prices and news regarding your stocks.\n\nPress and hold on a stock name to chart its performance and to access advanced anaylsis tools, including:\n\n   - Simple moving averages\n   - Exponential moving averages\n   - Moving average convergence     divergence\n   - Average directional index\n   - Relative strength index\n   - Boillinger bands\n   - Money flow volumes\n"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView12"
+            android:lines="15"
+            android:padding="2dp"
+            android:layout_weight="0.80"
+             />
+
+        <CheckBox
+            android:text="Don't show this screen again"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/showBox"
+            android:gravity="center_vertical"
+            android:padding="20dp"
+            />
+
+
+    </LinearLayout>
+</FrameLayout>

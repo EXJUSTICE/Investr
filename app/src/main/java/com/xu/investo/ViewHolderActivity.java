@@ -1,6 +1,9 @@
 package com.xu.investo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -11,7 +14,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +29,12 @@ public class ViewHolderActivity extends AppCompatActivity implements Communicate
     List<HistoricalQuote> historicaldata;
     Bundle bundle;
     Adapter adapter;
+    boolean infoUpToDate;
+    SharedPreferences sp;
+    SharedPreferences.Editor edit;
+    SharedPreferences welcomesp;
+    boolean shown;
+    boolean internetAccess;
 
 
     @Override
@@ -32,6 +43,10 @@ public class ViewHolderActivity extends AppCompatActivity implements Communicate
         setContentView(R.layout.activity_view_holder);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        internetAccess= isOnline();
+        if(internetAccess ==false){
+            Toast.makeText(this,"No network connection detected. Please check your internet connection",Toast.LENGTH_LONG).show();
+        }
 
 
         viewPager =(ViewPager)findViewById(R.id.viewpager);
@@ -47,7 +62,7 @@ public class ViewHolderActivity extends AppCompatActivity implements Communicate
 
             @Override
             public void onPageSelected(int position) {
-
+                adapter.notifyDataSetChanged();
 
             }
 
@@ -56,18 +71,43 @@ public class ViewHolderActivity extends AppCompatActivity implements Communicate
 
             }
         });
+        welcomesp =PreferenceManager.getDefaultSharedPreferences(this);
+        shown = welcomesp.getBoolean("welcomeShown",false);
+        if(shown == false){
+            WelcomeFragment wc= new WelcomeFragment();
+            wc.show(getSupportFragmentManager(),"Getting Started");
 
+        }
+
+
+    }
+
+    public boolean isOnline() {
+
+        Runtime runtime = Runtime.getRuntime();
+        try {
+
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+
+        } catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+
+        return false;
     }
     //----------------------- Interface code-----------
     @Override
     public void communicateup(){
+
         communicatedown();
-        //call communicate down STRAIGHT, since we call it from mainfrag
+        //call communicate down STRAIGHT to get to listfragment, since we call communicateup from mainfrag
     }
 
     @Override
     public void communicatedown(){
-        //This line works
+        //This line works, accesses the linefragment by its position in viewPager, then call its refreshUI
+        //method in order to fetch TinyDB portfolio
         ListFragment currentFragment =(ListFragment)adapter.instantiateItem(viewPager,1);
         currentFragment.refreshUI();
     }
@@ -107,6 +147,19 @@ public class ViewHolderActivity extends AppCompatActivity implements Communicate
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    //During onStop we will now store boolean uptodate as false, so that we can refresh all prices
+    //in listFragment when we next run it
+    @Override
+    public void onStop(){
+        super.onStop();
+        infoUpToDate = false;
+        sp = getSharedPreferences("settingsprefs", Context.MODE_PRIVATE);
+        edit= sp.edit();
+        edit.putBoolean("infoUpToDate",infoUpToDate);
+        edit.commit();
+
     }
 
 }

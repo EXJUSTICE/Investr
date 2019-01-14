@@ -11,11 +11,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.xu.investo.ListFragment"
-    tools:showIn="@layout/activity_view_holder">
+    >
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="250dp"
+        android:id ="@+id/newsrecylerView"
+        android:layout_below ="@+id/recylerView"
+
+
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false"
+      />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
         android:id ="@+id/recylerView"
 
 

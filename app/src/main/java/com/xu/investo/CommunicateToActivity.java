@@ -1,7 +1,7 @@
 package com.xu.investo;
 
 /**
- * Created by Omistaja on 03/02/2017.
+ * Interface to communicate to listfragment form mainfragment
  */
 
 public interface CommunicateToActivity {

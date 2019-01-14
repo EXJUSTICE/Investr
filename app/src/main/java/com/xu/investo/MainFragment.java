@@ -1,15 +1,21 @@
 package com.xu.investo;
 
+import android.Manifest;
 import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,8 +57,10 @@ Probably Yahoo Finance is the most toleraant and best choice
 //These should be displayed in a listView
 //After selection of listview we then launch GraphActivity.
 
-//TODO main page should not allow edittext dates, simply add to portfolio permanently.
-//All date setting should be done in GraphActivity
+//TODO while TinyDB is a sharedpreferences tool, everytime user starts app
+//TODO 2 implement a new fetchstockclass?
+//TODO old and tries to place more shares, hes actually emptying list?
+//TODO check internet access
 public class MainFragment extends Fragment   {
 
     String id;
@@ -61,10 +69,12 @@ public class MainFragment extends Fragment   {
     EditText enterID;
     TextView display;
     Button clear;
+    TextView continueadd;
     private static final String TAG = "MainFragment";
 
     ArrayList<String>stocknames;
     ArrayList<String>stocktickers;
+    ArrayList<String>stockprices;
     List<HistoricalQuote> historicaldata;
 
     TinyDB tinyDB;
@@ -89,15 +99,35 @@ public class MainFragment extends Fragment   {
     static final int DATE_DIALOG_ID = 999;
     CommunicateToActivity recyclerinterface;
 
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
+    boolean upToDate;
+    boolean internetAccess;
+    int MY_PERMISSIONS_REQUEST_INTERNET=123;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view =inflater.inflate(R.layout.content_main,container,false);
         stocknames = new ArrayList<String>();
         stocktickers = new ArrayList<String>();
+        stockprices= new ArrayList<String>();
         tinyDB = new TinyDB(getContext());
 
+        //TODO 06022017 Checking if tinyDB sharedprefs already contains lists, we add to that
+        if(tinyDB.getListString("stocknames")!=null){
+            stocknames = tinyDB.getListString("names");
+            stocktickers= tinyDB.getListString("tickers");
+            stockprices= tinyDB.getListString("prices");
+        }
+        if (Build.VERSION.SDK_INT >= 23 && !(getActivity().checkSelfPermission("android.permission.INTERNET") == PackageManager.PERMISSION_GRANTED )) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{"android.permission.INTERNET"}, MY_PERMISSIONS_REQUEST_INTERNET);
+        }
 
+        internetAccess= isOnline();
+        if(internetAccess ==false){
+            Toast.makeText(getActivity(),"No network connection detected. Please check your internet connection",Toast.LENGTH_LONG).show();
+        }
 
         /*
         menu.setDisplayShowHomeEnabled(true);
@@ -108,11 +138,33 @@ public class MainFragment extends Fragment   {
 
         fetch =(Button) view.findViewById(R.id.fetchBtn);
         enterID =(EditText)view.findViewById(R.id.enterID);
+        enterID.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         display =(TextView)view.findViewById(R.id.display);
         mCalendar = Calendar.getInstance();
         clear = (Button)view.findViewById(R.id.clearportfolio);
+        continueadd = (TextView)view.findViewById(R.id.continueAdding);
 
+        //Check if we need to update recyclerView
+        sp = getActivity().getSharedPreferences("settingsprefs", Context.MODE_PRIVATE);
+        editor=sp.edit();
+        upToDate = sp.getBoolean("infoUpToDate",false);
 
+        /*TODO Currently it keeps adding more tickers, suggest adding refersh button to both main and listfrag menus
+        //TODO user prompted refresh
+        if(upToDate== false){
+            tinyDB.clear();
+
+            for(int i =0;i<stocktickers.size();i++){
+                FetchXDayData getData = new FetchXDayData();
+                getData.execute(stocktickers.get(i));
+            }
+
+            //Finally, set the boolean to upToDate to true, until next time activity calls onStop
+            upToDate = true;
+            //recyclerinterface.communicateup();
+
+        }
+        */
 
 
 
@@ -121,12 +173,20 @@ public class MainFragment extends Fragment   {
 
 
         fetch.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+                internetAccess = isOnline();
+                if (internetAccess == false) {
+                    Toast.makeText(getActivity(), "No network connection detected. Please check your internet connection", Toast.LENGTH_LONG).show();
 
-                //TODO all the main page should do is add stocktickers and names to portfolio
-                //Fetch id and the dates
-                id =enterID.getText().toString();
+                } else {
+
+
+                    //TODO all the main page should do is add stocktickers and names to portfolio
+                    //Fetch id and the dates
+                    id = enterID.getText().toString();
+
 
 
 
@@ -136,14 +196,12 @@ public class MainFragment extends Fragment   {
                 to.setTime(dateto);
                 from.setTime(datefrom);
                 */
-
-                FetchXDayData getData = new FetchXDayData();
-                getData.execute(id);
-
-
-
-
-
+                if (id ==null ||id.equals("")){
+                    display.setText("Empty ticker entry, please try again");
+                }else{
+                    FetchXDayData getData = new FetchXDayData();
+                    getData.execute(id);
+                }
 
 
 
@@ -151,13 +209,21 @@ public class MainFragment extends Fragment   {
 
 
 
+
+                }
             }
         });
         clear.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                //Remove all stocks in portfolio in sharedprefs
                 tinyDB.clear();
+                //18-02-2017
+                stocknames.clear();
+                stocktickers.clear();
+                stockprices.clear();
                 recyclerinterface.communicateup();
+                Toast.makeText(getActivity(),"All stocks cleared from portfolio.",Toast.LENGTH_LONG).show();
 
             }
         });
@@ -168,6 +234,39 @@ public class MainFragment extends Fragment   {
 
         return view;
 
+    }
+
+    public void checkPermissions(){
+
+
+        /*
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.INTERNET},
+                    MY_PERMISSIONS_REQUEST_INTERNET);}
+                    */
+    }
+
+    //--------------Check internet
+    public boolean isOnline() {
+
+        Runtime runtime = Runtime.getRuntime();
+        try {
+
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     //----------------------------INTERFACE CODE
@@ -197,15 +296,21 @@ public class MainFragment extends Fragment   {
 
     //Called by AsyncTask, moving result to main thread
     public void  moveResultToUI(Stock result){
-
-        this.stock = result;
-        Toast.makeText(getActivity(),"Stock "+stock.getName()+" successfully added to portofolio",Toast.LENGTH_LONG).show();
-        //reverse the list of course,  stock names and tickrs to portfolio
-
+        if (result ==null||result.getName().isEmpty()) {
+            Toast nostockfound = Toast.makeText(getActivity(), "No such stock found, check ticker", Toast.LENGTH_LONG);
+            nostockfound.show();
 
 
-        stocknames.add(stock.getName());
-        stocktickers.add(stock.getSymbol());
+        }else{
+            this.stock = result;
+            Toast.makeText(getActivity(),"Stock "+stock.getName()+" successfully added to portofolio",Toast.LENGTH_LONG).show();
+            //reverse the list of course,  stock names and tickrs to portfolio
+
+
+
+            stocknames.add(stock.getName());
+            stocktickers.add(stock.getSymbol());
+            stockprices.add(stock.getQuote().getPrice().toString());
 
 
         /*DEBUG Test code, Test. 30012017 WORKS
@@ -217,27 +322,30 @@ public class MainFragment extends Fragment   {
         */
 
 
-        //
-        if (stock != null){
-            display.setText("Name: "+stock.getName() +"\n"+"Price: "+ stock.getQuote().getPrice()+"\n"+ "Change(%)"+stock.getQuote().getChangeInPercent());
-            /*SMA = getSMA(10);
-            decision=checkSimpleCrossover(SMA,stock.getQuote().getPrice().longValue());
-            decisionView.setText("SMA: " + SMA + "\n"+decision);
-            */
-            tinyDB.putListString("names",stocknames);
-            tinyDB.putListString("tickers",stocktickers);
-            //call interface activity comming up to Activity, then down to next fragment
-            recyclerinterface.communicateup();
+            //
+            if (stock != null){
+                display.setText("Name: "+stock.getName() +"\n"+"Price: "+ stock.getQuote().getPrice()+"\n"+ "Change(%): "+stock.getQuote().getChangeInPercent());
+
+                // Send data to ListFragment
+                continueadd.setText("To add another stock, enter its ticker into the field below");
+                tinyDB.putListString("names",stocknames);
+                tinyDB.putListString("tickers",stocktickers);
+                tinyDB.putListString("prices",stockprices);
+                //call interface activity comming up to Activity, then down to next fragment
+                recyclerinterface.communicateup();
 
 
 
 
 
 
-        }else{
-            Toast error = Toast.makeText(getActivity(),"Network Problem",Toast.LENGTH_SHORT);
-            error.show();
+            }else{
+                Toast error = Toast.makeText(getActivity(),"Network Problem",Toast.LENGTH_SHORT);
+                error.show();
+            }
         }
+
+
 
     }
 
@@ -338,8 +446,16 @@ public class MainFragment extends Fragment   {
                 pdialog.dismiss();
             }
 
-            //May have some overlap here
-            moveResultToUI(temp);
+            if(temp==null||temp.getName()==null||temp.getQuote().getPrice()==null){
+                Toast.makeText(getActivity(),"Invalid ticker, please check spelling",Toast.LENGTH_LONG).show();
+            }else{
+                moveResultToUI(temp);
+            }
+
+
+
+
+
 
 
 

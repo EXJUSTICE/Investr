@@ -5,6 +5,13 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="Refresh Stocks"
+        android:icon ="@drawable/refresh_icon_48dp"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="100"
+        android:title="Help"
+        app:showAsAction="never"/>
+
 </menu>

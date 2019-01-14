@@ -16,19 +16,7 @@
 
 
     <TextView
-        android:text="Current Stock Price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="54dp"
-        android:id="@+id/display"
-        android:lines="4"
-
-        android:padding="5dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:text="Stock Current Performance"
+        android:text="Stock Selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18dp"
@@ -45,26 +33,16 @@
         android:layout_marginTop="170dp"
         android:layout_alignParentEnd="true"
         android:background="@android:color/white"
-        android:padding="16dp">
-        <TextView
-            android:text="Enter the detail's of your stock of interest below"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:id="@+id/guide"
-            android:background="@color/colorAccent"
-            android:padding="5dp"
-            android:layout_marginTop="20dp"
-            android:textColor="@android:color/background_light"
-
-            android:layout_centerHorizontal="true" />
+        android:padding="16dp"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true">
 
         <Button
         android:text="Fetch Stock Data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/fetchBtn"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="100dp"
         style="@style/Widget.AppCompat.Button.Colored"
 
         android:layout_centerHorizontal="true" />
@@ -72,14 +50,16 @@
         <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+
         android:ems="10"
         android:id="@+id/enterID"
-            android:hint="Enter the stock ticker"
+            android:inputType="textCapSentences"
+
+
 
 
         android:textColorHint="@android:color/black"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
             android:layout_centerHorizontal="true" />
 
         <Button
@@ -89,10 +69,43 @@
             android:layout_height="wrap_content"
 
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="170dp"
+            android:layout_marginTop="160dp"
             style="@style/Widget.AppCompat.Button.Colored"
            />
 
     </RelativeLayout>
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/display"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:gravity="center_horizontal"
+        android:id="@+id/continueAdding"
+        android:textColor="@android:color/white"
+        android:padding="5dp"/>
+
+    <TextView
+        android:text="To add a stock into your portfolio, enter your stock ticker in the field below"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+
+        android:id="@+id/display"
+        android:lines="4"
+        android:textColor="@android:color/white"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_below="@+id/textView2"
+
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+         />
 
 </RelativeLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_date_chooser_fragment2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+
+    tools:context="com.xu.investo.DateChooserFragment"
+    tools:showIn="@layout/content_date_chooser_fragment"
+  >
+
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="wrap_content"
+
+
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+
+
+        android:layout_height ="wrap_content"
+        android:minHeight="50dp"
+        android:minWidth="100dp"
+        android:weightSum="1">
+
+        <TextView
+            android:text="Adjust your data interval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center"
+            android:padding="2dp"
+            android:layout_marginTop="15dp"
+
+            android:layout_above="@+id/endDate"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:text="Set Start Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/startDate"
+            android:layout_gravity="center"
+            android:padding="14dp"
+
+
+            android:layout_above="@+id/endDate"
+            android:layout_centerVertical="true" />
+
+        <TextView
+        android:text="Set End Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/endDate"
+            android:layout_gravity="center"
+            android:padding="14dp"
+
+        android:layout_above="@+id/refreshButton"
+        android:layout_alignEnd="@+id/refreshButton" />
+
+
+
+        <Button
+            android:text="REFRESH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/refreshButton"
+
+            android:layout_alignParentBottom="true"
+            android:padding="14dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="100dp" />
+
+    </LinearLayout>
+</FrameLayout>
