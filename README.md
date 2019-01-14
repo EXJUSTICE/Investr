@@ -1,3 +1,10 @@
-Android application designed to allow for stock portfolio management. llows users to enter, track, and graph their portfolio's performance in the stock market. Multiple technical indicators are including, including SMA, MACD, RSI, and Boillingers.
+Android application designed to allow for stock portfolio management. Allows users to enter, track, and graph their portfolio's performance in the stock market. Utilized Yahoo's Finance API. Multiple technical indicators can be visualized, including:
+* SMA, 
+* EMA
+* Moving Average Convergence Divergence (MACD)
+* Residual Strength Indicator (RSI)
+* Boillinger Bands (BB)
+* Directional Indicators (DI)
+* Average Directional Index (ADX)
 
-2018-11-17 Code needs updating with graphActivity
+
