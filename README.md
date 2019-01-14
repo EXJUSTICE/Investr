@@ -7,5 +7,5 @@ Android application designed to allow for stock portfolio management. Allows use
 * Directional Indicators (DI)
 * Average Directional Index (ADX)
 
-![alt text](https://github.com/EXJUSTICE/Investr/blob/master/Capture.JPG)
-<img src="https://github.com/EXJUSTICE/Investr/blob/master/Capture.JPG" width="400" height="790">
+
+<img src="https://github.com/EXJUSTICE/Investr/blob/master/Capture.JPG" width="516" height="291">
