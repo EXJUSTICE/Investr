@@ -7,4 +7,4 @@ Android application designed to allow for stock portfolio management. Allows use
 * Directional Indicators (DI)
 * Average Directional Index (ADX)
 
-
+[https://github.com/EXJUSTICE/Investr/blob/master/Capture.JPG?raw=true]
