@@ -1,4 +1,4 @@
-Android application designed to allow for stock portfolio management. Allows users to enter, track, and graph their portfolio's performance in the stock market. Utilized Yahoo's Finance API. Multiple technical indicators can be visualized, including:
+Android application designed to allow for stock portfolio management. Allows users to enter, track, and graph their portfolio's performance in within the convenience of their own device.. Utilized Yahoo's Finance API. Multiple technical indicators can be visualized, including:
 * SMA, 
 * EMA
 * Moving Average Convergence Divergence (MACD)
