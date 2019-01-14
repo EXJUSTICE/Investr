@@ -1,4 +1,5 @@
 
+<img src="https://github.com/EXJUSTICE/Investr/blob/master/Capture.JPG" width="400" height="790">
 <img src="https://github.com/EXJUSTICE/Investr/blob/master/Capture.JPG" width="344" height=194">
 
 
